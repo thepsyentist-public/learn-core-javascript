@@ -60,8 +60,13 @@ bindFunc2(8, 9);      // { x: 1 } 4 5 8 9
 
 ```js
 var func = function(a, b, c, d){
-  console.log(this, a, b, c
+  console.log(this, a, b, c);
+};
+var bindFunc = func.bind({ x: 1 }, 4, 5);
+console.log(func.name);            // func
+console.log(bindFunc.name);        // bound func
 ```
 
+
 ## 💡 인사이트
-- 용어가 헷갈리는 부분도 있지만, 핵심은 스코프가 생기면서 스코프 체이닝이 일어나는 과정과 호이스팅의 원리를 확실히 알 수 있었다.
+- call, apply, bind메서드의 차이를 알 수 있었고, bind메서드가 좀 더 명시적이라는 느낌이 들었다.
