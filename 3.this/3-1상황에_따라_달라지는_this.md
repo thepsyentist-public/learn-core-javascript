@@ -33,6 +33,51 @@ console.log(this.a); // 1
 - 따라서 `this.a`는 1이다.
 - `a`를 입력해도 1이 나오는 이유는 스코프 체인에서 a를 검색하다가 가장 마지막에 도달하는 전역 스코프의 a를 발견하여 반환했기 때문
 
+### 다른 환경에서의 전역 변수와 this
+Browser에서는 var로 선언할 때 `window`라는 전역 객체에 프로퍼티로 등록되는 것을 확인했다. this또한 `window`라는 것을 확인했다. 다른 환경에서는 어떨까?
+
+#### Node.js (REPL) 환경
+
+```js
+var b = 20;
+console.log(global.b); // 20
+console.log(globalThis.b); // 20
+console.log(this)         // global
+```
+
+- global, globalThis 접근 가능
+- this또한 global로 바인딩 됨
+> global, globalThis의 차이?
+> `global`: Node.js 환경에서만 존재하는 전역 객체를 의미하는 전역 변수
+> `gloablThis`: ES2020(ES11)에서 도입된 전역 객체를 참조하는 표준 방식으로써, 브라우저, Node.js, Web Worker 등 모든 환경에서 참조 가능
+
+#### Node.js (파일 실행) 환경
+
+```js
+var c = 30;
+console.log(global.c); // undefined
+console.log(globalThis.c); // undefined
+console.log(this)  // {} 빈 객체
+```
+
+- Node.js는 파일단위로 실행될 때 var를 모듈 스코프(module scope)에서 관리하기 때문.
+- this가 글로벌 객체를 가리키지 않도록 설계 됨.
+> Module scope란?
+> ES6 모듈(import/export) 또는 Node.js의 require() 방식에서 개별 모듈 내에서만 유효한 스코프를 의미.
+
+### ES6모듈 (mjs)
+
+```js
+// module.js (ES6 모듈)
+var a = 20;
+console.log(this);  // undefined
+console.log(global.a) // undefined
+console.log(window.a) // undefined
+```
+
+- 모듈 내에서 선언된 변수들은 전역 객체에 등록되지 않으며, 다른 모듈에서는 접근할 수 없고, 오직 해당 모듈 내에서만 유효하다.
+
+
 ### 메서드로서 호출할 때의 this
 - 메서드로 this는 호출한 객체를 참조한다.
 
