@@ -67,6 +67,23 @@ console.log(func.name);            // func
 console.log(bindFunc.name);        // bound func
 ```
 
+#### 화살표 함수는 예외
+- ES6에 새롭게 도입된 화살표 함수는 실행 컨텍스트 생성 시 this를 바인디앟는 과정이 제외되었다.
+- 즉, 이 함수 내부에는 this가 아예 없으며, 접근하고자 하면 스코프체인상 가장 가까운 this에 접근하게 된다.
+> 개인적인 의견으로는 일반 함수에서의 this 바인딩을 명시적으로 해줘야하는 불편함을 벗어나기 위해 this 바인딩을 위임하는 형식으로 가져가고픈 언어 개발자들의 생각이 아닐까 싶다.
+
+```js
+var obj = {
+  outer: function(){
+    console.log(this);
+    var innerFunc = () => {
+      console.log(this); 
+    }
+    innerFunc();
+  }
+};
+obj.outer(); // obj obj
+```
 
 ## 💡 인사이트
 - call, apply, bind메서드의 차이를 알 수 있었고, bind메서드가 좀 더 명시적이라는 느낌이 들었다.
